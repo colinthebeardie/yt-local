@@ -1,0 +1,31 @@
+body{
+    --text-color: #bcbcbc;
+    --background-color: #161616;
+    --border-color: #303030;
+    --video-background-color: #161616;
+    --link-color-rgb: 49, 135, 188;
+    --button-color: #282828;
+    --button-hover-color: #202020;
+    --input-focus-color: #161616;
+}
+
+.comment .permalink{
+    color: #bcbcbc;
+}
+
+.setting-item{
+    background-color: #161616;
+}
+
+.muted{
+    background-color: #303030;
+}
+
+input[type="checkbox"]{
+    -webkit-filter: invert(85%) hue-rotate(18deg) brightness(1.7);
+            filter: invert(85%) hue-rotate(18deg) brightness(1.7);
+}
+input[type="checkbox"]:checked{
+    -webkit-filter: none;
+            filter: none;
+}

@@ -1,0 +1,74 @@
+{% set page_title = playlist_name + ' - Local playlist' %}
+{% extends "base.html" %}
+{% import "common_elements.html" as common_elements %}
+{% block style %}
+    main{
+        width: min(100% - 2rem, 800px);
+        margin-inline: auto;
+        margin-top: 1.5rem;
+    }
+
+    .playlist-metadata{
+        padding: 0.5rem 1rem;
+    }
+        .playlist-title{
+            margin-bottom: 0.3rem;
+        }
+
+        #playlist-actions{
+            display: flex;
+            //align-self: center;
+            justify-content: space-between;
+        }
+            #video-remove-container{
+                text-align: right;
+            }
+            #export-type,
+            #playlist-export-button,
+            #video-remove-container button {
+                margin: 2px 2px;
+            }
+
+    #results{
+        width: 90%;
+        margin-inline: auto;
+        margin-top: 1.5rem;
+        display: grid;
+        grid-auto-rows: 0fr;
+        grid-row-gap: 1rem;
+    }
+{% endblock style %}
+
+{% block main %}
+    <div class="playlist-metadata">
+        <h2 class="playlist-title">{{ playlist_name }}</h2>
+
+        <div id="playlist-actions">
+            <div id="export-options">
+                <form id="playlist-export" method="post">
+                    <select id="export-type" name="export_format">
+                        <option value="json">JSON</option>
+                        <option value="ids">Video id list (txt)</option>
+                        <option value="urls">Video url list (txt)</option>
+                    </select>
+                    <button type="submit" id="playlist-export-button" name="action" value="export">Export</button>
+                </form>
+            </div>
+
+            <form id="playlist-remove" action="/youtube.com/edit_playlist" method="post" target="_self"></form>
+            <div id="video-remove-container">
+                <button type="submit" name="action" value="remove_playlist" form="playlist-remove" formaction="" onclick="return confirm('You are about to permanently delete {{ playlist_name }}\n\nOnce a playlist is permanently deleted, it cannot be recovered.');">Remove playlist</button>
+                <input type="hidden" name="playlist_page" value="{{ playlist_name }}" form="playlist-edit">
+                <button type="submit" id="playlist-remove-button" name="action" value="remove" form="playlist-edit" formaction="">Remove video</button>
+            </div>
+        </div>
+    </div>
+    <div id="results">
+        {% for video_info in videos %}
+            {{ common_elements.item(video_info) }}
+        {% endfor %}
+    </div>
+    <nav class="page-button-row">
+        {{ common_elements.page_buttons(num_pages, '/https://www.youtube.com/playlists/' + playlist_name, parameters_dictionary) }}
+    </nav>
+{% endblock main %}
